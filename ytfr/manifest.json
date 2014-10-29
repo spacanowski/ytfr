@@ -1,0 +1,13 @@
+{
+    "name": "YTFR",
+    "version": "0.0.1",
+    "manifest_version": 5,
+    "content_scripts": [
+    {    	
+        "matches": ["*://www.youtube.com/*", "*://youtube.com/*"],
+        "js": ["fragmentsRepeaters.js"],
+        "run_at": "document_end",
+        "all_frames": true
+    }
+]
+}
