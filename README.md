@@ -3,7 +3,7 @@
 
 YT video fragment repeat
 
-Chrome extension for rapeing  .... ekhm .... repeating freagment of YT video.
+Chrome extension for raping....ekhm.... repeating freagment of YT video.
 
 #How to install
 
