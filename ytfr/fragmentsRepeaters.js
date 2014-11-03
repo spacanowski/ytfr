@@ -19,26 +19,7 @@ var ytfrScriptCode = "\
 			delete ytplayer.config.args.start;\
 			ytplayer.load();\
 		} else {\
-			var startTime = 0,\
-				timeUnit = 60,\
-				endTime = Number(ytplayer.config.args.length_seconds);\
-			if (document.getElementById('shouldHaveEnd').checked) {\
-				var userEndTime = Number(document.getElementById('repeatEndHours').value) * timeUnit * timeUnit +\
-					Number(document.getElementById('repeatEndMins').value) * timeUnit +\
-					Number(document.getElementById('repeatEndSecs').value);\
-				if (userEndTime < endTime) {\
-					ytplayer.config.args.end = userEndTime;\
-					endTime = userEndTime;\
-				}\
-			}\
-			if (document.getElementById('shouldHaveStart').checked) {\
-				var userStartTime = Number(document.getElementById('repeatStartHours').value) * timeUnit * timeUnit +\
-					Number(document.getElementById('repeatStartMins').value) * timeUnit +\
-					Number(document.getElementById('repeatStartSecs').value);\
-				if (userStartTime > startTime && userStartTime < endTime) {\
-					ytplayer.config.args.start = userStartTime;\
-				}\
-			}\
+			var endTime = calculateAndSetTimesFromFields();\
 			repeatInterval = setInterval(function() {\
 				if (document.getElementById(\"movie_player\").getCurrentTime() >= endTime) {\
 					ytplayer.load();\
@@ -47,6 +28,76 @@ var ytfrScriptCode = "\
 			ytplayer.load();\
 		}\
 	}\
+	function calculateAndSetTimesFromFields() {\
+		var startTime = 0,\
+			timeUnit = 60,\
+			endTime = Number(ytplayer.config.args.length_seconds);\
+		if (document.getElementById('shouldHaveEnd').checked) {\
+			var userEndTime = getNumericRepeatValueFromField('repeatEndHours') * timeUnit * timeUnit +\
+				getNumericRepeatValueFromField('repeatEndMins') * timeUnit +\
+				getNumericRepeatValueFromField('repeatEndSecs');\
+			if (userEndTime < endTime) {\
+				ytplayer.config.args.end = userEndTime;\
+				endTime = userEndTime;\
+			}\
+		}\
+		if (document.getElementById('shouldHaveStart').checked) {\
+			var userStartTime = getNumericRepeatValueFromField('repeatStartHours') * timeUnit * timeUnit +\
+				getNumericRepeatValueFromField('repeatStartMins') * timeUnit +\
+				getNumericRepeatValueFromField('repeatStartSecs');\
+			if (userStartTime > startTime && userStartTime < endTime) {\
+				ytplayer.config.args.start = userStartTime;\
+			}\
+		}\
+		return endTime;\
+	}\
+	function getNumericRepeatValueFromField(fieldName) {\
+		return Number(document.getElementById(fieldName).value);\
+	}\
+	function setNumericRepeatValueInField(fieldName, newValue) {\
+		return document.getElementById(fieldName).value = newValue;\
+	}\
+	function setRepValues(initialValue, which) {\
+		document.getElementById('shouldHave'+which).click();\
+		initialValue = Number(initialValue);\
+		var sec = initialValue%60;\
+		if (sec < 60) {\
+			initialValue -= sec;\
+			setNumericRepeatValueInField('repeat'+which+'Secs', sec);\
+		}\
+		var min = initialValue%3600;\
+		if (min < 3600) {\
+			initialValue -= min;\
+			setNumericRepeatValueInField('repeat'+which+'Mins', min/60);\
+		}\
+		setNumericRepeatValueInField('repeat'+which+'Hours', initialValue/3600);\
+	}\
+	(function() {\
+		var params = window.location.search.substring(1),\
+			getURLParameter = function(name) {\
+					var value = new RegExp(name + '=([^&]+)').exec(params);\
+					if (value)\
+						return decodeURIComponent(value[1]);\
+					else\
+						return null;\
+				},\
+			repStart = getURLParameter('repStart'),\
+			repEnd = getURLParameter('repEnd');\
+		if (repStart || repEnd)\
+			document.getElementById('repeatCheckbox').click();\
+		if (repStart) {\
+			setRepValues(repStart, 'Start');\
+		}\
+		if (repEnd) {\
+			if (repEnd > Number(ytplayer.config.args.length_seconds))\
+				repEnd = Number(ytplayer.config.args.length_seconds);\
+			setRepValues(repEnd, 'End');\
+		}\
+		if (repStart || repEnd) {\
+			calculateAndSetTimesFromFields();\
+			ytplayer.load();\
+		}\
+	})();\
 ";
 var ytfrHtmlCode = "\
 <div>\
