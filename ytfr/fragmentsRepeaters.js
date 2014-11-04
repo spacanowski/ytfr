@@ -83,17 +83,15 @@ var ytfrScriptCode = "\
 				},\
 			repStart = getURLParameter('repStart'),\
 			repEnd = getURLParameter('repEnd');\
-		if (repStart || repEnd)\
+		if (repStart || repEnd) {\
 			document.getElementById('repeatCheckbox').click();\
-		if (repStart) {\
+			if (!repStart) {\
+				repStart = 0;\
+			}\
 			setRepValues(repStart, 'Start');\
-		}\
-		if (repEnd) {\
-			if (repEnd > Number(ytplayer.config.args.length_seconds))\
+			if (!repEnd || repEnd > Number(ytplayer.config.args.length_seconds))\
 				repEnd = Number(ytplayer.config.args.length_seconds);\
 			setRepValues(repEnd, 'End');\
-		}\
-		if (repStart || repEnd) {\
 			calculateAndSetTimesFromFields();\
 			ytplayer.load();\
 		}\
