@@ -28,23 +28,24 @@ var ytfrScriptCode = "\
 			ytplayer.load();\
 		}\
 	}\
+	function convertTimeFieldsToSeconds(h, m, s) {\
+		var timeUnit = 60;\
+		return getNumericRepeatValueFromField(h) * timeUnit * timeUnit +\
+			getNumericRepeatValueFromField(m) * timeUnit +\
+			getNumericRepeatValueFromField(s);\
+	}\
 	function calculateAndSetTimesFromFields() {\
 		var startTime = 0,\
-			timeUnit = 60,\
 			endTime = Number(ytplayer.config.args.length_seconds);\
 		if (document.getElementById('shouldHaveEnd').checked) {\
-			var userEndTime = getNumericRepeatValueFromField('repeatEndHours') * timeUnit * timeUnit +\
-				getNumericRepeatValueFromField('repeatEndMins') * timeUnit +\
-				getNumericRepeatValueFromField('repeatEndSecs');\
+			var userEndTime = convertTimeFieldsToSeconds('repeatEndHours', 'repeatEndMins', 'repeatEndSecs');\
 			if (userEndTime < endTime) {\
 				ytplayer.config.args.end = userEndTime;\
 				endTime = userEndTime;\
 			}\
 		}\
 		if (document.getElementById('shouldHaveStart').checked) {\
-			var userStartTime = getNumericRepeatValueFromField('repeatStartHours') * timeUnit * timeUnit +\
-				getNumericRepeatValueFromField('repeatStartMins') * timeUnit +\
-				getNumericRepeatValueFromField('repeatStartSecs');\
+			var userStartTime = convertTimeFieldsToSeconds('repeatStartHours', 'repeatStartMins', 'repeatStartSecs');\
 			if (userStartTime > startTime && userStartTime < endTime) {\
 				ytplayer.config.args.start = userStartTime;\
 			}\
@@ -72,17 +73,24 @@ var ytfrScriptCode = "\
 		}\
 		setNumericRepeatValueInField('repeat'+which+'Hours', initialValue/3600);\
 	}\
+	function getURLParameter(name, params) {\
+		var value = new RegExp(name + '=([^&]+)').exec(params);\
+		if (value)\
+			return decodeURIComponent(value[1]);\
+		else\
+			return null;\
+	}\
+	function prepareVideoRepeatLink() {\
+		var userEndTime = convertTimeFieldsToSeconds('repeatEndHours', 'repeatEndMins', 'repeatEndSecs'),\
+			userStartTime = convertTimeFieldsToSeconds('repeatStartHours', 'repeatStartMins', 'repeatStartSecs');\
+		document.getElementById('linkFragmentField').value = 'http://youtu.be/'+\
+			getURLParameter('v', window.location.search.substring(1))+'?repStart='+userStartTime+\
+			'&repEnd='+userEndTime;\
+	}\
 	(function() {\
 		var params = window.location.search.substring(1),\
-			getURLParameter = function(name) {\
-					var value = new RegExp(name + '=([^&]+)').exec(params);\
-					if (value)\
-						return decodeURIComponent(value[1]);\
-					else\
-						return null;\
-				},\
-			repStart = getURLParameter('repStart'),\
-			repEnd = getURLParameter('repEnd');\
+			repStart = getURLParameter('repStart', params),\
+			repEnd = getURLParameter('repEnd', params);\
 		if (repStart || repEnd) {\
 			document.getElementById('repeatCheckbox').click();\
 			if (!repStart) {\
@@ -121,7 +129,9 @@ var ytfrHtmlCode = "\
 			</div>\
 		</div><br>\
 		<label for=\"repeatFragmentButton\">Repeat</label>\
-		<input id=\"repeatFragmentButton\" type=\"checkbox\" onClick=\"makeFragmentRepeat(this)\" />\
+		<input id=\"repeatFragmentButton\" type=\"checkbox\" onClick=\"makeFragmentRepeat(this)\" /><br>\
+		<input id=\"linkFragmentButton\" type=\"button\" onClick=\"prepareVideoRepeatLink()\" value=\"Prepare link\"/>\
+		<input id=\"linkFragmentField\" type=\"text\" disabled=\"true\" style=\"width:400px\"/>\
 	</div>\
 	</div>\
 ";
