@@ -26,3 +26,11 @@ Chrome extension for raping....ekhm.... repeating freagment of YT video.
 If you don't define end and start whole video will repeat.
 If you don't define start, just end video will repeat from start to set time.
 If you don't define end, just start video will repeat from set time to video end.
+
+#Sending video with start and end
+
+There id functionality to pass link to video with parameters to another user of this extension.
+Opening such link will start video from specified start point and stop it and specified end point and it will fill repeat fields.
+Under repeat fields is button that will get set values for repeat and generate link with those params in text will beside it.
+Then you can just copy it and send it to your friend. If he/she likes this fragment it just takes checking repeat checkbox to repeat it for ever .... and ever .... and ever (see Machine Heads 'Now we die' intro)
+
