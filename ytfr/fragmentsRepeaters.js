@@ -61,6 +61,9 @@ var ytfrScriptCode = "\
 	function setRepValues(initialValue, which) {\
 		document.getElementById('shouldHave'+which).click();\
 		initialValue = Number(initialValue);\
+		setRepValuesOnFields(initialValue, which);\
+	}\
+	function setRepValuesOnFields(initialValue, which) {\
 		var sec = initialValue%60;\
 		if (sec < 60) {\
 			initialValue -= sec;\
@@ -72,6 +75,9 @@ var ytfrScriptCode = "\
 			setNumericRepeatValueInField('repeat'+which+'Mins', min/60);\
 		}\
 		setNumericRepeatValueInField('repeat'+which+'Hours', initialValue/3600);\
+	}\
+	function setCapturedValues(which) {\
+		setRepValuesOnFields(Math.floor(document.getElementById(\"movie_player\").getCurrentTime()), which);\
 	}\
 	function getURLParameter(name, params) {\
 		var value = new RegExp(name + '=([^&]+)').exec(params);\
@@ -117,6 +123,7 @@ var ytfrHtmlCode = "\
 				<label for=\"repeatStartHours\">h</label><input id=\"repeatStartHours\" value=\"0\" type=\"number\" style=\"width: 40px;margin-left: 3px;\"/>\
 				<label for=\"repeatStartMins\">m</label><input id=\"repeatStartMins\" value=\"0\" type=\"number\" min=\"0\" max=\"59\" style=\"width: 40px;margin-left: 3px;\"/>\
 				<label for=\"repeatStartSecs\">s</label><input id=\"repeatStartSecs\" value=\"0\" type=\"number\" min=\"0\" max=\"59\" style=\"width: 40px;margin-left: 3px;\"/>\
+				<input id=\"captureRepStart\" type=\"button\" onClick=\"setCapturedValues('Start')\" value=\"Capture time\"/>\
 			</div>\
 		</div>\
 		<div>\
@@ -126,6 +133,7 @@ var ytfrHtmlCode = "\
 				<label for=\"repeatEndHours\">h</label><input id=\"repeatEndHours\" value=\"0\" type=\"number\" min=\"0\" style=\"width: 40px;margin-left: 3px;\"/>\
 				<label for=\"repeatEndMins\">m</label><input id=\"repeatEndMins\" value=\"0\" type=\"number\" min=\"0\" max=\"59\" style=\"width: 40px;margin-left: 3px;\"/>\
 				<label for=\"repeatEndSecs\">s</label><input id=\"repeatEndSecs\" value=\"0\" type=\"number\" min=\"0\" max=\"59\" style=\"width: 40px;margin-left: 3px;\"/>\
+				<input id=\"captureRepEnd\" type=\"button\" onClick=\"setCapturedValues('End')\" value=\"Capture time\"/>\
 			</div>\
 		</div><br>\
 		<label for=\"repeatFragmentButton\">Repeat</label>\
