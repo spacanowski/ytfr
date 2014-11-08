@@ -34,3 +34,6 @@ Opening such link will start video from specified start point and stop it and sp
 Under repeat fields is button that will get set values for repeat and generate link with those params in text will beside it.
 Then you can just copy it and send it to your friend. If he/she likes this fragment it just takes checking repeat checkbox to repeat it for ever .... and ever .... and ever (see Machine Heads 'Now we die' intro)
 
+##Example
+
+Friend found new Machine Heads album (Bloodstone & Diamonds - http://youtu.be/PJKReRPG5tM) before you (the nerve of bastard) and wants to send you one song, let's go with 'Sail Into The Black'. So he start playing this song (00:24:37) and clicks capture time button on repeat start, he listens this pure awesomnes to the end (00:33:06) and click capture time on repeat end. Then he click generate link button and sends you generated link (http://youtu.be/PJKReRPG5tM?repStart=1477&repEnd=1986). You listenn to song, you thank your friend and you click rape ...uhm.... I mean repeat button and you listen and listen and listen
