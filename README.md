@@ -19,7 +19,7 @@ Chrome extension for raping....ekhm.... repeating freagment of YT video.
 
 1. Go to video you want to watch
 2. Under video there no is 'Repeat fragment' checkbox - click it
-3. Define start and/or end of repeat cycle
+3. Define start and/or end of repeat cycle (can be done by filling inputs or clicking capture button when you think it's proper moment)
 4. Check repeat video
 5. Watch your favourite fragment (for me it's listening to intro of Machine Head 'Now we die' over and over and over)
 
